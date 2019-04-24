@@ -35,7 +35,7 @@ namespace SchacoVoiceCnversion
         }
 
         // 识别本地录音文件
-        public static BaiduSpeechResult AsrData(string file,LanguageType language,string format= "pcm")
+        public static BaiduSpeechResult AsrData(string file,string language,string format= "pcm")
         {
             string Format = format;
             var data = File.ReadAllBytes(file);

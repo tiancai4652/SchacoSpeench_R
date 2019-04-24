@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchacoRecorder", "GetVioce\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchacoVoiceCnversion", "SachoSpeech\SchacoVoiceCnversion.csproj", "{C24CD690-96D7-42AD-886A-0646D369473B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{16DA0586-47C4-47C1-AFBF-36DB59FFF38E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C24CD690-96D7-42AD-886A-0646D369473B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C24CD690-96D7-42AD-886A-0646D369473B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C24CD690-96D7-42AD-886A-0646D369473B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16DA0586-47C4-47C1-AFBF-36DB59FFF38E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16DA0586-47C4-47C1-AFBF-36DB59FFF38E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16DA0586-47C4-47C1-AFBF-36DB59FFF38E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16DA0586-47C4-47C1-AFBF-36DB59FFF38E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
