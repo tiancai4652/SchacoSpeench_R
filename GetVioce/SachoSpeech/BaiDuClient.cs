@@ -35,13 +35,14 @@ namespace SchacoVoiceCnversion
         }
 
         // 识别本地录音文件
-        public static BaiduSpeechResult AsrData(string file)
+        public static BaiduSpeechResult AsrData(string file,LanguageType language,string format= "pcm")
         {
+            string Format = format;
             var data = File.ReadAllBytes(file);
             // 可选参数
-            var options = new Dictionary<string, object> {{"dev_pid", LanguageType.CommonChinese}};
+            var options = new Dictionary<string, object> {{"dev_pid", language } };
             client.Timeout = 120000; // 若语音较长，建议设置更大的超时时间. ms
-            var JObj = client.Recognize(data, "pcm", 16000, options) ;
+            var JObj = client.Recognize(data, Format, 16000, options) ;
             return BaiduSpeechResult.Convertor(JObj);
         }
     }

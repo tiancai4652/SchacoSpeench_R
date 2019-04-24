@@ -57,17 +57,34 @@ namespace SchacoRecorderer
         }
 
         /// <summary>
-        /// 开始录音
+        /// 开始录音（默认 16k 采样率、16bit 位深、单声道）
         /// </summary>
         /// <param name="Device">选择的录音设备</param>
-        /// <param name="fileName"></param>
-        public void StartCapture(MyAudioInputDevice Device, string fileName)
+        /// <param name="fileName">录音文件路径</param>
+        /// <param name="sampleRate">采样率(KHz)[1,200]</param>
+        /// <param name="bitsPerSample">位深[8,16,24,32]</param>
+        /// <param name="channels">声道数[1,2]</param>
+        public void StartCapture(MyAudioInputDevice Device, string fileName, int sampleRate=16, int bitsPerSample=8, int channels=1)
         {
+            if (sampleRate >= 100 && sampleRate <= 200000)
+            {
+                return;
+            }
+            int[] list1 = new int[] { 8, 16, 24, 32 };
+            if (!list1.Any(x => x == bitsPerSample))
+            {
+                return;
+            }
+            int[] list2 = new int[] { 1, 2 };
+            if (!list2.Any(x => x == channels))
+            {
+                return;
+            }
             MMDevice SelectedDevice = Device.Device;
             CaptureMode CaptureMode = Device.CaptureMode;
-
             if (SelectedDevice == null)
                 return;
+
 
             if (CaptureMode == CaptureMode.Capture)
                 _soundIn = new WasapiCapture();
@@ -78,8 +95,21 @@ namespace SchacoRecorderer
             _soundIn.Initialize();
 
             var soundInSource = new SoundInSource(_soundIn);
-            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ToSampleSource());
-            _finalSource = singleBlockNotificationStream.ToWaveSource();
+            //var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ToSampleSource());
+            //_finalSource = singleBlockNotificationStream.ToWaveSource();
+
+            _finalSource = soundInSource
+                    .ChangeSampleRate(sampleRate) // sample rate
+                    .ToSampleSource()
+                    .ToWaveSource(bitsPerSample); //bits per sample
+            if (channels == 1)
+            {
+                _finalSource.ToMono();
+            }
+            else
+            {
+                _finalSource.ToStereo();
+            }
             _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
 
             byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
