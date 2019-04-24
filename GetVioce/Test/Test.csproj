@@ -53,9 +53,9 @@
       <Project>{186cc20d-1043-4401-a4c2-91159dbafeb3}</Project>
       <Name>SchacoRecorder</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SachoSpeech\SchacoVoiceCnversion.csproj">
+    <ProjectReference Include="..\SachoSpeech\SchacoVoiceCnversionByBaidu.csproj">
       <Project>{c24cd690-96d7-42ad-886a-0646d369473b}</Project>
-      <Name>SchacoVoiceCnversion</Name>
+      <Name>SchacoVoiceCnversionByBaidu</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

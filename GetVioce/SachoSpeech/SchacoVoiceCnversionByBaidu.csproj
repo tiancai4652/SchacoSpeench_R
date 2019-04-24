@@ -7,8 +7,8 @@
     <ProjectGuid>{C24CD690-96D7-42AD-886A-0646D369473B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SchacoVoiceCnversion</RootNamespace>
-    <AssemblyName>SchacoVoiceCnversion</AssemblyName>
+    <RootNamespace>SchacoVoiceCnversionByBaidu</RootNamespace>
+    <AssemblyName>SchacoVoiceCnversionByBaidu</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

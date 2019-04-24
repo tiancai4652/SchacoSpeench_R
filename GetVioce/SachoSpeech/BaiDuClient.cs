@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchacoVoiceCnversion
+namespace SchacoVoiceCnversionByBaidu
 {
     public class BaiDuClient
     {
