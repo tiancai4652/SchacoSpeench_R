@@ -6,24 +6,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchacoRecorder_WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="300" Width="800">
     <controls:MetroWindow.Resources>
         <local:BoolToImageSourceConvertor x:Key="BoolToImageSourceConvertor"></local:BoolToImageSourceConvertor>
     </controls:MetroWindow.Resources>
     <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0"></Grid>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center">选择音频输入设备:</TextBlock>
+                    <TextBox Margin="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="400"></TextBox>
+                    <CheckBox Margin="5" Grid.Column="2">音频环回捕获</CheckBox>
+
+                </Grid>
+                <Grid Grid.Row="1" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="*"/>
+
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Margin="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center">选择保存音频文件路径:</TextBlock>
+                    <TextBox Margin="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="400"></TextBox>
+                    <Button Margin="5" Grid.Column="2" Width="100" Height="30">选择</Button>
+
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1">
+               
+            </Grid>
+
+        </Grid>
+
         <Grid Grid.Row="1"></Grid>
-        <Grid Grid.Row="2"></Grid>
-        <Grid Grid.Row="3"></Grid>
-        
-
-
-
     </Grid>
 </controls:MetroWindow>
