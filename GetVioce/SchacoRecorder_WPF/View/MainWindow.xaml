@@ -7,7 +7,23 @@
         xmlns:local="clr-namespace:SchacoRecorder_WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <controls:MetroWindow.Resources>
+        <local:BoolToImageSourceConvertor x:Key="BoolToImageSourceConvertor"></local:BoolToImageSourceConvertor>
+    </controls:MetroWindow.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"></Grid>
+        <Grid Grid.Row="1"></Grid>
+        <Grid Grid.Row="2"></Grid>
+        <Grid Grid.Row="3"></Grid>
         
+
+
+
     </Grid>
 </controls:MetroWindow>
