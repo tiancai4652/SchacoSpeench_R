@@ -82,23 +82,23 @@
         </Grid>
 
         <Grid Grid.Row="1" Background="#14144B">
-            <lvc:CartesianChart Hoverable="False" DataTooltip="{x:Null}" Series="{Binding SeriesCollection}">
-                <!--<lvc:CartesianChart.Series>
-                    --><!--<lvc:LineSeries Values="100, 85, 50, 35, 5, 3"/>
+            <lvc:CartesianChart Hoverable="False" DataTooltip="{x:Null}" >
+                <lvc:CartesianChart.Series>
+                    <!--<lvc:LineSeries Values="100, 85, 50, 35, 5, 3"/>
                     <lvc:LineSeries Values="-100, -85, -50, -35, -5, 3"/>
 
                     --><!--Shadows--><!--
                     <lvc:LineSeries Values="110, 94, 60, 40, 10, 10" Fill="#222C78" Panel.ZIndex="-1"/>
-                    <lvc:LineSeries Values="-110, -94, -60, -40, -10, -10" Fill="#222C78" Panel.ZIndex="-1"/>--><!--
+                    <lvc:LineSeries Values="-110, -94, -60, -40, -10, -10" Fill="#222C78" Panel.ZIndex="-1"/>-->
 
                     <lvc:LineSeries AreaLimit="-10" Values="{Binding LeftSource}" Fill="Transparent"   LineSmoothness="0" PointGeometry ="{x:Null}"/>
                     <lvc:LineSeries AreaLimit="-10" Values="{Binding RightSource}" Fill="Transparent"   LineSmoothness="0" PointGeometry ="{x:Null}"/>
-                    --><!--<lvc:LineSeries AreaLimit="-10" Values="1,2,3,4,5,6" Foreground="{x:Null}" Fill="Transparent"/>
-                    <lvc:LineSeries AreaLimit="-10" Values="-1,-2,-3,-4,-5,-6" Foreground="{x:Null}" Fill="Transparent"/>--><!--
-                </lvc:CartesianChart.Series>-->
-                <lvc:CartesianChart.AxisY>
+                    <!--<lvc:LineSeries AreaLimit="-10" Values="1,2,3,4,5,6" Foreground="{x:Null}" Fill="Transparent"/>
+                    <lvc:LineSeries AreaLimit="-10" Values="-1,-2,-3,-4,-5,-6" Foreground="{x:Null}" Fill="Transparent"/>-->
+                </lvc:CartesianChart.Series>
+                <!--<lvc:CartesianChart.AxisY>
                     <lvc:Axis MaxValue="1" MinValue="-1" MinRange="-1" MaxRange="1"/>
-                </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart.AxisY>-->
             </lvc:CartesianChart>
         </Grid>
     </Grid>

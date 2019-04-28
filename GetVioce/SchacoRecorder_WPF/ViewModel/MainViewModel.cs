@@ -223,7 +223,7 @@ namespace SchacoRecorder_WPF.ViewModel
         {
             if ((DateTime.Now - LastAddPointTime).TotalMilliseconds > 200)
             {
-
+                LastAddPointTime = DateTime.Now;
                 LeftSource.Add(new ObservableValue(e.Left));
                 RightSource.Add(new ObservableValue(e.Right));
                 if (LeftSource.Count > 100)
