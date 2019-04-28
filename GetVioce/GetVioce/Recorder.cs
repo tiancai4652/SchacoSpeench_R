@@ -64,7 +64,7 @@ namespace SchacoRecorderer
         /// <param name="sampleRate">采样率(KHz)[1,200]</param>
         /// <param name="bitsPerSample">位深[8,16,24,32]</param>
         /// <param name="channels">声道数[1,2]</param>
-        public void StartCapture(MyAudioInputDevice Device, string fileName, EventHandler<SingleBlockReadEventArgs> eh,int sampleRate=16, int bitsPerSample=8, int channels=1)
+        public void StartCapture(MyAudioInputDevice Device, string fileName, EventHandler<SingleBlockReadEventArgs> eh,int sampleRate=16, int bitsPerSample=16, int channels=1)
         {
             if (sampleRate >= 100 && sampleRate <= 200000)
             {

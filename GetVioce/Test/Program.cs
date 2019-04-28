@@ -14,12 +14,12 @@ namespace Test
         {
             var list= Recorder.GetAllAudioInputDevices();
             var t = list[0];
-            string Filename = @"C:\Users\zr644\Desktop\11.wav";
-            Recorder r = new Recorder();
-            r.StartCapture(t, Filename,null);
+            string Filename = @"C:\Users\zr644\Desktop\out.wav";
+            //Recorder r = new Recorder();
+            //r.StartCapture(t, Filename,null);
 
 
-            r.StopCapture();
+            //r.StopCapture();
 
 
            var result= BaiDuClient.AsrData(Filename, LanguageType.CommonChinese);

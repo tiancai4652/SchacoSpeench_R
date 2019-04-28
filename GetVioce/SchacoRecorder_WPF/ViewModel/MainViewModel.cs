@@ -26,9 +26,6 @@ namespace SchacoRecorder_WPF.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        public SeriesCollection SeriesCollection { get; set; }
-
-        public DateTime LastAddPointTime { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -40,13 +37,10 @@ namespace SchacoRecorder_WPF.ViewModel
             OpenDialogCommand = new RelayCommand(OpenDialog);
             PlayPauseCommand = new RelayCommand(PlayPause);
             IniChartSource();
-
-
-            SeriesCollection = new SeriesCollection();
-            SeriesCollection.Add(GetS(LeftSource));
-            SeriesCollection.Add(GetS(RightSource));
-
         }
+
+        #region Property
+        public DateTime LastAddPointTime { get; set; }
 
         LineSeries GetS(ChartValues<ObservableValue> source)
         {
@@ -61,11 +55,6 @@ namespace SchacoRecorder_WPF.ViewModel
             //添加折线图的数据
             mylineseries.Values = source;
             return mylineseries;
-        }
-
-        void GetAllDevices()
-        {
-            DeviceList = new ObservableCollection<MyAudioInputDevice>(Recorder.GetAllAudioInputDevices(IsCheckCaptureDevice ? SchacoRecorderer.CaptureMode.Capture : SchacoRecorderer.CaptureMode.LoopbackCapture));
         }
 
         public Recorder Recorder { get; set; }
@@ -95,6 +84,10 @@ namespace SchacoRecorder_WPF.ViewModel
             {
                 _DeviceList = value;
                 RaisePropertyChanged(() => DeviceList);
+                if (SelectedDevice == null&& DeviceList!=null&& DeviceList.Count>0)
+                {
+                    SelectedDevice = DeviceList[0];
+                }
             }
         }
 
@@ -112,7 +105,7 @@ namespace SchacoRecorder_WPF.ViewModel
             }
         }
 
-        string _SaveFilePath = "";
+        string _SaveFilePath = Gloable.RecordFileName;
         public string SaveFilePath
         {
             get
@@ -141,6 +134,39 @@ namespace SchacoRecorder_WPF.ViewModel
             }
         }
 
+        ChartValues<ObservableValue> _LeftSource = new ChartValues<ObservableValue>();
+        public ChartValues<ObservableValue> LeftSource
+        {
+            get
+            {
+                return _LeftSource;
+            }
+            set
+            {
+                _LeftSource = value;
+                RaisePropertyChanged(() => LeftSource);
+            }
+        }
+
+        ChartValues<ObservableValue> _RightSource = new ChartValues<ObservableValue>();
+        public ChartValues<ObservableValue> RightSource
+        {
+            get
+            {
+                return _RightSource;
+            }
+            set
+            {
+                _RightSource = value;
+                RaisePropertyChanged(() => RightSource);
+            }
+        }
+
+
+
+        #endregion
+
+        #region Command
         public ICommand OpenDialogCommand { get; set; }
         void OpenDialog()
         {
@@ -180,6 +206,15 @@ namespace SchacoRecorder_WPF.ViewModel
           
         }
 
+        #endregion
+
+        #region Private
+
+        void GetAllDevices()
+        {
+            DeviceList = new ObservableCollection<MyAudioInputDevice>(Recorder.GetAllAudioInputDevices(IsCheckCaptureDevice ? SchacoRecorderer.CaptureMode.Capture : SchacoRecorderer.CaptureMode.LoopbackCapture));
+        }
+
         void IniChartSource()
         {
             for (int i = 0; i < 20; i++)
@@ -191,35 +226,7 @@ namespace SchacoRecorder_WPF.ViewModel
             }
         }
 
-        ChartValues<ObservableValue> _LeftSource = new ChartValues<ObservableValue>();
-        public ChartValues<ObservableValue> LeftSource
-        {
-            get
-            {
-                return _LeftSource;
-            }
-            set
-            {
-                _LeftSource = value;
-                RaisePropertyChanged(() => LeftSource);
-            }
-        }
-
-        ChartValues<ObservableValue> _RightSource = new ChartValues<ObservableValue>();
-        public ChartValues<ObservableValue> RightSource
-        {
-            get
-            {
-                return _RightSource;
-            }
-            set
-            {
-                _RightSource = value;
-                RaisePropertyChanged(() => RightSource);
-            }
-        }
-
-        private void SingleBlockNotificationStreamOnSingleBlockRead(object sender, SingleBlockReadEventArgs e)
+        void SingleBlockNotificationStreamOnSingleBlockRead(object sender, SingleBlockReadEventArgs e)
         {
             if ((DateTime.Now - LastAddPointTime).TotalMilliseconds > 200)
             {
@@ -236,5 +243,114 @@ namespace SchacoRecorder_WPF.ViewModel
                 }
             }
         }
+
+        bool IsSuitableForLimited(SingleBlockReadEventArgs e)
+        {
+            bool IsLeftOK = false;
+            bool IsRightOK = false;
+            IsLeftOK = LeftLimitedUp >= e.Left && LeftLimitedDown <= e.Left;
+            IsRightOK = RightLimitedUp >= e.Right && RightLimitedDown <= e.Right;
+            return IsLeftOK && IsRightOK;
+        }
+
+        #endregion
+
+        #region RecordSetting
+
+        int _DelayTimeToSetStopMS = 2000;
+        /// <summary>
+        /// 持续多长时间无声音后停止录音
+        /// </summary>
+        public int DelayTimeToSetStopMS
+        {
+            get
+            {
+                return _DelayTimeToSetStopMS;
+            }
+            set
+            {
+                _DelayTimeToSetStopMS = value;
+                RaisePropertyChanged(() => DelayTimeToSetStopMS);
+            }
+        }
+
+        float _LeftLimitedUp = 5;
+        public float LeftLimitedUp
+        {
+            get
+            {
+                return _LeftLimitedUp;
+            }
+            set
+            {
+                _LeftLimitedUp = value;
+                RaisePropertyChanged(() => LeftLimitedUp);
+            }
+        }
+
+        float _LeftLimitedDown = -5;
+        public float LeftLimitedDown
+        {
+            get
+            {
+                return _LeftLimitedDown;
+            }
+            set
+            {
+                _LeftLimitedDown = value;
+                RaisePropertyChanged(() => LeftLimitedDown);
+            }
+        }
+
+        float _RightLimitedUp = 5;
+        public float RightLimitedUp
+        {
+            get
+            {
+                return _RightLimitedUp;
+            }
+            set
+            {
+                _RightLimitedUp = value;
+                RaisePropertyChanged(() => RightLimitedUp);
+            }
+        }
+
+        float _RightLimitedDown = -5;
+        public float RightLimitedDown
+        {
+            get
+            {
+                return _RightLimitedDown;
+            }
+            set
+            {
+                _RightLimitedDown = value;
+                RaisePropertyChanged(() => RightLimitedDown);
+            }
+        }
+
+        string _TranslateText = "";
+        public string TranslateText
+        {
+            get
+            {
+                return _TranslateText;
+            }
+            set
+            {
+                _TranslateText = value;
+                RaisePropertyChanged(() => TranslateText);
+            }
+        }
+
+
+
+
+
+
+        #endregion
+
+
     }
 }
