@@ -25,5 +25,7 @@ namespace SchacoRecorder_WPF
         {
             InitializeComponent();
         }
+
+       
     }
 }

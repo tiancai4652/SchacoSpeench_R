@@ -39,16 +39,16 @@ namespace SchacoRecorder_WPF.ViewModel
             GetAllDevices();
             OpenDialogCommand = new RelayCommand(OpenDialog);
             PlayPauseCommand = new RelayCommand(PlayPause);
-            IniChartSource();
+            //IniChartSource();
 
 
             SeriesCollection = new SeriesCollection();
-            SeriesCollection.Add(GetS(LeftSource));
-            SeriesCollection.Add(GetS(RightSource));
+            SeriesCollection.Add(GetS());
+            SeriesCollection.Add(GetS());
 
         }
 
-        LineSeries GetS(ChartValues<ObservableValue> source)
+        LineSeries GetS()
         {
             //实例化一条折线图
             LineSeries mylineseries = new LineSeries();
@@ -59,7 +59,8 @@ namespace SchacoRecorder_WPF.ViewModel
             //折线图的无点样式
             mylineseries.PointGeometry = null;
             //添加折线图的数据
-            mylineseries.Values = source;
+            mylineseries.Values = new ChartValues<ObservableValue>();
+            mylineseries.Fill = null;
             return mylineseries;
         }
 
@@ -180,59 +181,59 @@ namespace SchacoRecorder_WPF.ViewModel
           
         }
 
-        void IniChartSource()
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                ObservableValue x = new ObservableValue(0);
-                _LeftSource.Add(x);
-                ObservableValue y = new ObservableValue(0);
-                _RightSource.Add(y);
-            }
-        }
+        //void IniChartSource()
+        //{
+        //    for (int i = 0; i < 20; i++)
+        //    {
+        //        ObservableValue x = new ObservableValue(0);
+        //        _LeftSource.Add(x);
+        //        ObservableValue y = new ObservableValue(0);
+        //        _RightSource.Add(y);
+        //    }
+        //}
 
-        ChartValues<ObservableValue> _LeftSource = new ChartValues<ObservableValue>();
-        public ChartValues<ObservableValue> LeftSource
-        {
-            get
-            {
-                return _LeftSource;
-            }
-            set
-            {
-                _LeftSource = value;
-                RaisePropertyChanged(() => LeftSource);
-            }
-        }
+        //ChartValues<ObservableValue> _LeftSource = new ChartValues<ObservableValue>();
+        //public ChartValues<ObservableValue> LeftSource
+        //{
+        //    get
+        //    {
+        //        return _LeftSource;
+        //    }
+        //    set
+        //    {
+        //        _LeftSource = value;
+        //        RaisePropertyChanged(() => LeftSource);
+        //    }
+        //}
 
-        ChartValues<ObservableValue> _RightSource = new ChartValues<ObservableValue>();
-        public ChartValues<ObservableValue> RightSource
-        {
-            get
-            {
-                return _RightSource;
-            }
-            set
-            {
-                _RightSource = value;
-                RaisePropertyChanged(() => RightSource);
-            }
-        }
+        //ChartValues<ObservableValue> _RightSource = new ChartValues<ObservableValue>();
+        //public ChartValues<ObservableValue> RightSource
+        //{
+        //    get
+        //    {
+        //        return _RightSource;
+        //    }
+        //    set
+        //    {
+        //        _RightSource = value;
+        //        RaisePropertyChanged(() => RightSource);
+        //    }
+        //}
 
         private void SingleBlockNotificationStreamOnSingleBlockRead(object sender, SingleBlockReadEventArgs e)
         {
-            if ((DateTime.Now - LastAddPointTime).TotalMilliseconds > 200)
+            if ((DateTime.Now - LastAddPointTime).TotalMilliseconds > 300)
             {
-
-                LeftSource.Add(new ObservableValue(e.Left));
-                RightSource.Add(new ObservableValue(e.Right));
-                if (LeftSource.Count > 100)
+                LastAddPointTime = DateTime.Now;
+                SeriesCollection[0].Values.Add(new ObservableValue(e.Left));
+                SeriesCollection[1].Values.Add(new ObservableValue(e.Right));
+                if (SeriesCollection[0].Values.Count > 100)
                 {
-                    LeftSource.RemoveAt(0);
+                    SeriesCollection[0].Values.RemoveAt(0);
                 }
-                if (RightSource.Count > 100)
+                if (SeriesCollection[1].Values.Count > 100)
                 {
-                    RightSource.RemoveAt(0);
+                    SeriesCollection[1].Values.RemoveAt(0);
                 }
             }
         }
