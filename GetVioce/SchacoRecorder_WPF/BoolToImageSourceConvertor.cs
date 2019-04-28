@@ -19,7 +19,7 @@ namespace SchacoRecorder_WPF
             {
                 if (_playImage == null)
                 {
-                    _playImage = new BitmapImage(new Uri("/Resource/Play.png", UriKind.Relative));
+                    _playImage = new BitmapImage(new Uri("pack://application:,,,/SchacoRecorder_WPF;component/Resource/Play.png", UriKind.Absolute));
                 }
                 return _playImage;
             }
@@ -32,7 +32,7 @@ namespace SchacoRecorder_WPF
             {
                 if (_pauseImage == null)
                 {
-                    _pauseImage = new BitmapImage(new Uri("/Resource/Pause.png", UriKind.Relative));
+                    _pauseImage = new BitmapImage(new Uri("pack://application:,,,/SchacoRecorder_WPF;component/Resource/Pause.png", UriKind.Absolute));
                 }
                 return _pauseImage;
             }

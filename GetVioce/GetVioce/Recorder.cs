@@ -64,7 +64,7 @@ namespace SchacoRecorderer
         /// <param name="sampleRate">采样率(KHz)[1,200]</param>
         /// <param name="bitsPerSample">位深[8,16,24,32]</param>
         /// <param name="channels">声道数[1,2]</param>
-        public void StartCapture(MyAudioInputDevice Device, string fileName, int sampleRate=16, int bitsPerSample=8, int channels=1)
+        public void StartCapture(MyAudioInputDevice Device, string fileName, EventHandler<SingleBlockReadEventArgs> eh,int sampleRate=16, int bitsPerSample=8, int channels=1)
         {
             if (sampleRate >= 100 && sampleRate <= 200000)
             {
@@ -95,12 +95,12 @@ namespace SchacoRecorderer
             _soundIn.Initialize();
 
             var soundInSource = new SoundInSource(_soundIn);
-            //var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ToSampleSource());
+            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource
+                    .ChangeSampleRate(sampleRate) // sample rate
+                    .ToSampleSource());
             //_finalSource = singleBlockNotificationStream.ToWaveSource();
 
-            _finalSource = soundInSource
-                    .ChangeSampleRate(sampleRate) // sample rate
-                    .ToSampleSource()
+            _finalSource = singleBlockNotificationStream
                     .ToWaveSource(bitsPerSample); //bits per sample
             if (channels == 1)
             {
@@ -119,10 +119,48 @@ namespace SchacoRecorderer
                 while ((read = _finalSource.Read(buffer, 0, buffer.Length)) > 0)
                     _writer.Write(buffer, 0, read);
             };
-
-            //singleBlockNotificationStream.SingleBlockRead += SingleBlockNotificationStreamOnSingleBlockRead;
+            if (eh != null)
+            {
+                singleBlockNotificationStream.SingleBlockRead += eh;
+            }
             _soundIn.Start();
         }
+
+        public void StartCaptureDefaultSetting(MyAudioInputDevice Device, string fileName, EventHandler<SingleBlockReadEventArgs> eh)
+        {
+            if (Device.Device == null)
+                return;
+
+            if (Device.CaptureMode == CaptureMode.Capture)
+                _soundIn = new WasapiCapture();
+            else
+                _soundIn = new WasapiLoopbackCapture();
+
+            _soundIn.Device = Device.Device;
+            _soundIn.Initialize();
+
+            var soundInSource = new SoundInSource(_soundIn);
+            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ToSampleSource());
+            _finalSource = singleBlockNotificationStream.ToWaveSource();
+            _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
+
+            byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
+            soundInSource.DataAvailable += (s, e) =>
+            {
+                int read;
+                while ((read = _finalSource.Read(buffer, 0, buffer.Length)) > 0)
+                    _writer.Write(buffer, 0, read);
+            };
+
+            if (eh != null)
+            {
+                singleBlockNotificationStream.SingleBlockRead += eh;
+            }
+
+            _soundIn.Start();
+        }
+
+
 
         /// <summary>
         /// 停止录音
