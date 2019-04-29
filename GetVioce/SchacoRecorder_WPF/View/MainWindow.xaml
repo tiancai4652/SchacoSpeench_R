@@ -40,7 +40,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Margin="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center">选择音频输入设备:</TextBlock>
-                    <ComboBox ItemsSource="{Binding DeviceList}" SelectedItem="{Binding SelectedDevice}" Margin="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="400"></ComboBox>
+                    <ComboBox ItemsSource="{Binding DeviceList}" SelectedItem="{Binding SelectedDevice}" DisplayMemberPath="Device.FriendlyName" Margin="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="400"></ComboBox>
                     <CheckBox IsChecked="{Binding IsCheckCaptureDevice}" Margin="5" Grid.Column="2">音频环回捕获</CheckBox>
 
                 </Grid>
