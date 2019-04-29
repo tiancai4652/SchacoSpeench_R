@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using SchacoRecorderer;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
 
 namespace SchacoRecorder_WPF.ViewModel
@@ -194,6 +195,11 @@ namespace SchacoRecorder_WPF.ViewModel
             {
                 Recorder = new Recorder();
             }
+            var dic = Path.GetDirectoryName(SaveFilePath);
+            if (!Directory.Exists(dic))
+            {
+                Directory.CreateDirectory(dic);
+            }
             IsPlaying = !IsPlaying;
             if (!IsPlaying)
             {
@@ -201,7 +207,7 @@ namespace SchacoRecorder_WPF.ViewModel
             }
             else
             {
-                Recorder.StartCaptureDefaultSetting(SelectedDevice, SaveFilePath, SingleBlockNotificationStreamOnSingleBlockRead);
+                Recorder.StartCaptureDefaultSetting2(SelectedDevice, SaveFilePath, SingleBlockNotificationStreamOnSingleBlockRead);
             }
           
         }

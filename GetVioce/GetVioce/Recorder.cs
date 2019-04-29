@@ -19,9 +19,7 @@ namespace SchacoRecorderer
     /// </summary>
     public class Recorder
     {
-        WasapiCapture _soundIn = null;
-        IWaveSource _finalSource = null;
-        IWriteable _writer = null;
+      
         static WaveFormat WaveFormatFromBlob(Blob blob)
         {
             if (blob.Length == 40)
@@ -160,6 +158,111 @@ namespace SchacoRecorderer
             _soundIn.Start();
         }
 
+        public void StartCaptureDefaultSetting2(MyAudioInputDevice Device, string fileName, EventHandler<SingleBlockReadEventArgs> eh,
+            int sampleRate = 16, int bitsPerSample = 16, int channels = 2)
+        {
+            if (Device.Device == null)
+                return;
+
+            if (Device.CaptureMode == CaptureMode.Capture)
+                _soundIn = new WasapiCapture();
+            else
+                _soundIn = new WasapiLoopbackCapture();
+
+            _soundIn.Device = Device.Device;
+            _soundIn.Initialize();
+
+            var soundInSource = new SoundInSource(_soundIn);
+            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ChangeSampleRate(sampleRate).ToSampleSource());
+            _finalSource = singleBlockNotificationStream.ToWaveSource(bitsPerSample);
+            _finalSource = channels == 1 ? _finalSource.ToMono() : _finalSource.ToStereo();
+            _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
+
+            byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
+            soundInSource.DataAvailable += (s, e) =>
+            {
+                int read;
+                while ((read = _finalSource.Read(buffer, 0, buffer.Length)) > 0)
+                    _writer.Write(buffer, 0, read);
+            };
+
+            if (eh != null)
+            {
+                singleBlockNotificationStream.SingleBlockRead += eh;
+            }
+
+            _soundIn.Start();
+        }
+
+
+
+
+
+        WasapiCapture _soundIn = null;
+        IWaveSource _finalSource = null;
+        IWriteable _writer = null;
+
+
+        /// <summary>
+        /// 开始录音（默认 16k 采样率、16bit 位深、单声道）
+        /// </summary>
+        /// <param name="Device">选择的录音设备</param>
+        /// <param name="fileName">录音文件路径</param>
+        /// <param name="sampleRate">采样率(KHz)[1,200]</param>
+        /// <param name="bitsPerSample">位深[8,16,24,32]</param>
+        /// <param name="channels">声道数[1,2]</param>
+        public void StartCapture2(MyAudioInputDevice Device, string fileName, EventHandler<SingleBlockReadEventArgs> eh, 
+            int sampleRate = 16, int bitsPerSample = 16, int channels = 1)
+        {
+
+
+            CaptureMode captureMode = Device.CaptureMode;
+            DataFlow dataFlow = captureMode == CaptureMode.Capture ? DataFlow.Capture : DataFlow.Render;
+
+            var device = Device.Device;
+
+            WasapiCapture _soundIn = captureMode == CaptureMode.Capture
+                ? new WasapiCapture()
+                : new WasapiLoopbackCapture();
+                if (true)
+                {
+                    {
+                    _soundIn.Device = device;
+                    _soundIn.Initialize();
+                        SoundInSource soundInSource = new SoundInSource(_soundIn) { FillWithZeros = false };
+                        IWaveSource _finalSource = soundInSource
+                            .ChangeSampleRate(sampleRate) // sample rate
+                            .ToSampleSource()
+                            .ToWaveSource(bitsPerSample); //bits per sample
+                    _finalSource = channels == 1 ? _finalSource.ToMono() : _finalSource.ToStereo();
+                        
+                        if(true)
+                        {
+
+                         _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
+                            
+                            if (true)
+                            {
+                                soundInSource.DataAvailable += (s, e) =>
+                                {
+                                    byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
+                                    int read;
+                                    while ((read = _finalSource.Read(buffer, 0, buffer.Length)) > 0)
+                                    {
+                                        _writer.Write(buffer, 0, read);
+                                    }
+                                };
+                            _soundIn.Start();
+                            //    Console.WriteLine("Capturing started ... press any key to stop.");
+                            //    Console.ReadKey();
+                            //_soundIn.Stop();
+                            }
+                            
+                        
+                    }
+                    }
+                }
+        }
 
 
         /// <summary>

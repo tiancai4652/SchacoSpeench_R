@@ -14,7 +14,7 @@ namespace Test
         {
             var list= Recorder.GetAllAudioInputDevices();
             var t = list[0];
-            string Filename = @"C:\Users\zr644\Desktop\out.wav";
+            string Filename = @"C:\Users\Administrator\Desktop\out.wav";
             //Recorder r = new Recorder();
             //r.StartCapture(t, Filename,null);
 
