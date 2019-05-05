@@ -33,11 +33,9 @@ namespace SchacoRecorderer
         /// <returns></returns>
         public static List<MyAudioInputDevice> GetAllAudioInputDevices(CaptureMode captureMode = CaptureMode.LoopbackCapture)
         {
-            CaptureMode CaptureMode = captureMode;
             List<MyAudioInputDevice> result = new List<MyAudioInputDevice>();
-            using (var deviceEnumerator = new MMDeviceEnumerator())
-            using (var deviceCollection = deviceEnumerator.EnumAudioEndpoints(
-                CaptureMode == CaptureMode.Capture ? DataFlow.Capture : DataFlow.Render, DeviceState.Active))
+            DataFlow dataFlow = captureMode == CaptureMode.Capture ? DataFlow.Capture : DataFlow.Render;
+            using (var deviceCollection = MMDeviceEnumerator.EnumerateDevices(dataFlow, DeviceState.Active))
             {
                 foreach (var device in deviceCollection)
                 {
@@ -47,7 +45,7 @@ namespace SchacoRecorderer
                     MyAudioInputDevice temp = new MyAudioInputDevice();
                     temp.Device = device;
                     temp.Channels = deviceFormat.Channels;
-                    temp.CaptureMode = CaptureMode;
+                    temp.CaptureMode = captureMode;
                     result.Add(temp);
                 }
             }
