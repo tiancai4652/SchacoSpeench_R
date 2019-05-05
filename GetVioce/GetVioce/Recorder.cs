@@ -92,8 +92,8 @@ namespace SchacoRecorderer
             _soundIn.Device = SelectedDevice;
             _soundIn.Initialize();
 
-            var soundInSource = new SoundInSource(_soundIn);
-            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource
+            _soundInSource = new SoundInSource(_soundIn);
+            var singleBlockNotificationStream = new SingleBlockNotificationStream(_soundInSource
                     .ChangeSampleRate(sampleRate) // sample rate
                     .ToSampleSource());
             //_finalSource = singleBlockNotificationStream.ToWaveSource();
@@ -111,7 +111,7 @@ namespace SchacoRecorderer
             _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
 
             byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
-            soundInSource.DataAvailable += (s, e) =>
+            _soundInSource.DataAvailable += (s, e) =>
             {
                 int read;
                 while ((read = _finalSource.Read(buffer, 0, buffer.Length)) > 0)
@@ -137,13 +137,13 @@ namespace SchacoRecorderer
             _soundIn.Device = Device.Device;
             _soundIn.Initialize();
 
-            var soundInSource = new SoundInSource(_soundIn);
-            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ToSampleSource());
+            _soundInSource = new SoundInSource(_soundIn);
+            var singleBlockNotificationStream = new SingleBlockNotificationStream(_soundInSource.ToSampleSource());
             _finalSource = singleBlockNotificationStream.ToWaveSource();
             _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
 
             byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
-            soundInSource.DataAvailable += (s, e) =>
+            _soundInSource.DataAvailable += (s, e) =>
             {
                 int read;
                 while ((read = _finalSource.Read(buffer, 0, buffer.Length)) > 0)
@@ -172,14 +172,14 @@ namespace SchacoRecorderer
             _soundIn.Device = Device.Device;
             _soundIn.Initialize();
 
-            var soundInSource = new SoundInSource(_soundIn);
-            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ChangeSampleRate(sampleRate).ToSampleSource());
+            _soundInSource = new SoundInSource(_soundIn);
+            var singleBlockNotificationStream = new SingleBlockNotificationStream(_soundInSource.ChangeSampleRate(sampleRate).ToSampleSource());
             _finalSource = singleBlockNotificationStream.ToWaveSource(bitsPerSample);
             _finalSource = channels == 1 ? _finalSource.ToMono() : _finalSource.ToStereo();
             _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
 
             byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
-            soundInSource.DataAvailable += (s, e) =>
+            _soundInSource.DataAvailable += (s, e) =>
             {
                 int read;
                 while ((read = _finalSource.Read(buffer, 0, buffer.Length)) > 0)
@@ -201,7 +201,7 @@ namespace SchacoRecorderer
         WasapiCapture _soundIn = null;
         IWaveSource _finalSource = null;
         IWriteable _writer = null;
-
+        SoundInSource _soundInSource = null;
 
         /// <summary>
         /// 开始录音（默认 16k 采样率、16bit 位深、单声道）
@@ -229,8 +229,8 @@ namespace SchacoRecorderer
                     {
                     _soundIn.Device = device;
                     _soundIn.Initialize();
-                        SoundInSource soundInSource = new SoundInSource(_soundIn) { FillWithZeros = false };
-                        IWaveSource _finalSource = soundInSource
+                    _soundInSource = new SoundInSource(_soundIn) { FillWithZeros = false };
+                        IWaveSource _finalSource = _soundInSource
                             .ChangeSampleRate(sampleRate) // sample rate
                             .ToSampleSource()
                             .ToWaveSource(bitsPerSample); //bits per sample
@@ -243,7 +243,7 @@ namespace SchacoRecorderer
                             
                             if (true)
                             {
-                                soundInSource.DataAvailable += (s, e) =>
+                                _soundInSource.DataAvailable += (s, e) =>
                                 {
                                     byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
                                     int read;
@@ -276,7 +276,9 @@ namespace SchacoRecorderer
                 _soundIn.Dispose();
                 _soundIn = null;
                 _finalSource.Dispose();
-
+                _finalSource = null;
+                _soundInSource.Dispose();
+                _soundInSource = null;
                 if (_writer is IDisposable)
                     ((IDisposable)_writer).Dispose();
             }
