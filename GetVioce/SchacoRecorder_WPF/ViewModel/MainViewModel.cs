@@ -165,6 +165,7 @@ namespace SchacoRecorder_WPF.ViewModel
 
 
 
+      
         #endregion
 
         #region Command
@@ -232,6 +233,15 @@ namespace SchacoRecorder_WPF.ViewModel
             }
         }
 
+        void IniChartSourceWithStraightLine(ChartValues<ObservableValue> source,int count,float value)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                ObservableValue x = new ObservableValue(value);
+                source.Add(x);
+            }
+        }
+
         void SingleBlockNotificationStreamOnSingleBlockRead(object sender, SingleBlockReadEventArgs e)
         {
             if ((DateTime.Now - LastAddPointTime).TotalMilliseconds > 200)
@@ -291,6 +301,7 @@ namespace SchacoRecorder_WPF.ViewModel
             {
                 _LeftLimitedUp = value;
                 RaisePropertyChanged(() => LeftLimitedUp);
+                IniChartSourceWithStraightLine(LeftLimitUpSource,100, LeftLimitedUp);
             }
         }
 
@@ -305,6 +316,7 @@ namespace SchacoRecorder_WPF.ViewModel
             {
                 _LeftLimitedDown = value;
                 RaisePropertyChanged(() => LeftLimitedDown);
+                IniChartSourceWithStraightLine(LeftLimitDownSource, 100, LeftLimitedDown);
             }
         }
 
@@ -319,6 +331,7 @@ namespace SchacoRecorder_WPF.ViewModel
             {
                 _RightLimitedUp = value;
                 RaisePropertyChanged(() => RightLimitedUp);
+                IniChartSourceWithStraightLine(RightLimitUpSource, 100, RightLimitedUp);
             }
         }
 
@@ -333,6 +346,63 @@ namespace SchacoRecorder_WPF.ViewModel
             {
                 _RightLimitedDown = value;
                 RaisePropertyChanged(() => RightLimitedDown);
+                IniChartSourceWithStraightLine(RightLimitDownSource, 100, RightLimitedDown);
+            }
+        }
+
+        ChartValues<ObservableValue> _LeftLimitUpSource = new ChartValues<ObservableValue>();
+        public ChartValues<ObservableValue> LeftLimitUpSource
+        {
+            get
+            {
+                return _LeftLimitUpSource;
+            }
+            set
+            {
+                _LeftLimitUpSource = value;
+                RaisePropertyChanged(() => LeftLimitUpSource);
+            }
+        }
+
+        ChartValues<ObservableValue> _RighLimitUpSource = new ChartValues<ObservableValue>();
+        public ChartValues<ObservableValue> RightLimitUpSource
+        {
+            get
+            {
+                return _RighLimitUpSource;
+            }
+            set
+            {
+                _RighLimitUpSource = value;
+                RaisePropertyChanged(() => RightLimitUpSource);
+            }
+        }
+
+        ChartValues<ObservableValue> _LeftLimitDownSource = new ChartValues<ObservableValue>();
+        public ChartValues<ObservableValue> LeftLimitDownSource
+        {
+            get
+            {
+                return _LeftLimitDownSource;
+            }
+            set
+            {
+                _LeftLimitDownSource = value;
+                RaisePropertyChanged(() => LeftLimitDownSource);
+            }
+        }
+
+        ChartValues<ObservableValue> _RighLimitDownSource = new ChartValues<ObservableValue>();
+        public ChartValues<ObservableValue> RightLimitDownSource
+        {
+            get
+            {
+                return _RighLimitDownSource;
+            }
+            set
+            {
+                _RighLimitDownSource = value;
+                RaisePropertyChanged(() => RightLimitDownSource);
             }
         }
 
