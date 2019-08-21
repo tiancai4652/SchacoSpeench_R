@@ -58,6 +58,7 @@
                     <Button Command="{Binding OpenDialogCommand}" Margin="5" Grid.Column="2" Width="100" Height="30">选择</Button>
 
                 </Grid>
+                <Label Content="{Binding Words}" HorizontalAlignment="Left" Margin="37,58,0,0" VerticalAlignment="Top" Grid.RowSpan="2" Width="484"/>
             </Grid>
             <Grid Grid.Column="1">
                 <ToggleButton Width="50"
@@ -122,21 +123,21 @@
                     <lvc:Axis MaxValue="1" MinValue="-1" MinRange="-1" MaxRange="1"/>
                 </lvc:CartesianChart.AxisY>-->
                     <lvc:CartesianChart.VisualElements>
-                      
+
                         <lvc:VisualElement X="0.75" Y="0" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <lvc:VisualElement.UIElement>
                                 <TextBlock Foreground="White" FontSize="40">100 %</TextBlock>
                             </lvc:VisualElement.UIElement>
                         </lvc:VisualElement>
 
-                     
+
                         <lvc:VisualElement X="2" Y="50" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <lvc:VisualElement.UIElement>
                                 <TextBlock Foreground="White" FontSize="40">50 %</TextBlock>
                             </lvc:VisualElement.UIElement>
                         </lvc:VisualElement>
 
-                      
+
                         <lvc:VisualElement X="2" Y="-50" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <lvc:VisualElement.UIElement>
                                 <TextBlock Foreground="White" FontSize="40">5 %</TextBlock>
@@ -147,7 +148,7 @@
             </Grid>
             <Grid Grid.Column="2">
                 <StackPanel Orientation="Horizontal">
-                <Slider Orientation="Vertical"
+                    <Slider Orientation="Vertical"
                         Height="200"
                         Cursor="SizeNS" Value="{Binding RightLimitedUp}"/>
                     <Slider Orientation="Vertical"
@@ -156,6 +157,6 @@
                 </StackPanel>
             </Grid>
         </Grid>
-      
+
     </Grid>
 </controls:MetroWindow>

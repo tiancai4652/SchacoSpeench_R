@@ -6,6 +6,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Microsoft.Win32;
 using SchacoRecorderer;
+using SchacoVoiceCnversionByBaidu;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -163,9 +164,21 @@ namespace SchacoRecorder_WPF.ViewModel
             }
         }
 
+        string _Words;
+        public string Words
+        {
+            get
+            {
+                return _Words;
+            }
+            set
+            {
+                _Words = value;
+                RaisePropertyChanged(() => Words);
+            }
+        }
 
 
-      
         #endregion
 
         #region Command
@@ -205,6 +218,14 @@ namespace SchacoRecorder_WPF.ViewModel
             if (!IsPlaying)
             {
                 Recorder.StopCapture();
+                #region З­вы
+
+                var result = BaiDuClient.AsrData(SaveFilePath, LanguageType.CommonChinese);
+                if (result.IsCorrect)
+                {
+                    Words = result.Result.ToString();
+                }
+                #endregion
             }
             else
             {

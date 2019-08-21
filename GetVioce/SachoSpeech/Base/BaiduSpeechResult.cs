@@ -16,7 +16,7 @@ namespace SchacoVoiceCnversionByBaidu
         public static BaiduSpeechResult Convertor(JObject obj)
         {
             BaiduSpeechResult resutl = new BaiduSpeechResult();
-            resutl.IsCorrect = obj["err_no"].Equals("0");
+            resutl.IsCorrect = obj["err_no"].Equals(0);
             resutl.ErrorMsg = obj["err_msg"].ToString();
             resutl.Result = obj["result"] as JArray;
             return resutl;

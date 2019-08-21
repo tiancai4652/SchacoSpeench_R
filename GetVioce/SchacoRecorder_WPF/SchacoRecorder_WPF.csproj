@@ -61,6 +61,9 @@
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.6.2\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -168,6 +171,10 @@
     <ProjectReference Include="..\GetVioce\SchacoRecorder.csproj">
       <Project>{186CC20D-1043-4401-A4C2-91159DBAFEB3}</Project>
       <Name>SchacoRecorder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SachoSpeech\SchacoVoiceCnversionByBaidu.csproj">
+      <Project>{C24CD690-96D7-42AD-886A-0646D369473B}</Project>
+      <Name>SchacoVoiceCnversionByBaidu</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
